@@ -4,8 +4,8 @@ function dydt = ode_RC(t,y,t_g,g)
  %note that t_g is time vector for the forcing function
  %note that g is the vector of data representing the forcing function
  
- R = 4.99e3;
- C = 3.35e-6;
+ R = 5.1e3;
+ C = 3.3e-6;
  k = 1/(R*C);
  
  g_at_t = interp1(t_g,g,t); % Interpolate the data set (gt,g) at time t
