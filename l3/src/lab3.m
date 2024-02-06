@@ -5,16 +5,16 @@
  C = 3.3e-6;
  k = 1/(R*C);
  
- %t = sym('t');
-
 
  %% Base
 
 vin_t = linspace(time_start,time_final,t_step);
-vin =  heaviside(vin_t - .00000001);
 Tspan = [time_start time_final];
 
-theor_vin = (1 - exp((- vin_t) / (R * C) ));
+sys = tf(k, [1 k]);
+[h, h_t ] = impulse(sys, vin_t);
+
+theor_vout = (exp((- vin_t) / (R * C) )) * k;
 
 IC = 0;
 
@@ -22,20 +22,21 @@ options=odeset('RelTol',1e-4);
 
 [vout_t,vout]=ode45(@(t,y)ode_RC(t,y,vin_t,vin),Tspan,IC,options);
 %% experimental data construction
-file = "../res/scope_0.csv";
-opts = detectImportOptions(file);
+% file = "../res/scope_0.csv";
+% opts = detectImportOptions(file);
+% 
+% data = readmatrix(file, opts);
+% 
+% t_ex = data(:, 4) - .314;
+% 
+% vin_ex = data(:, 5);
+% 
+% vout_ex = data(:, 6);
 
-data = readmatrix(file, opts);
-
-t_ex = data(:, 4) - .314;
-
-vin_ex = data(:, 5);
-
-vout_ex = data(:, 6);
-%preview(file,opts);
 
 
 %% plot 
+clf
 figure(1)
 
 hold on
@@ -48,27 +49,27 @@ ylim([ -.1 1.2])
 
 
 %%% Simulation
-ps = plot(vout_t, vout,"-.",'LineWidth',3);
+ps = plot(h_t, h,"-.",'LineWidth',3);
 
 
 %%% Theoretical
 
-pt = plot(vin_t, theor_vin, ":",'LineWidth',3);
+pt = plot(vin_t, theor_vout, ":",'LineWidth',3);
 
 
 
 %%% Experimental in
 
-p_ex_in = plot(t_ex, vin_ex, "-",'LineWidth',1);
+% p_ex_in = plot(t_ex, vin_ex, "-",'LineWidth',1);
 
 
 
 %%% Experimental out'
 
-p_ex_out = plot(t_ex, vout_ex, "--", 'LineWidth', 3);
+% p_ex_out = plot(t_ex, vout_ex, "--", 'LineWidth', 3);
 
 
-legend('Simulation', 'Theoretical', 'Experimental In', 'Experimental Out');
+legend('Simulation', 'Theoretical') % 'Experimental In', 'Experimental Out');
 
 
 hold off
