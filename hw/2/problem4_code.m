@@ -1,3 +1,6 @@
+out = sim("problem4");
+
+
 t = out.tout;
 
 
@@ -23,7 +26,7 @@ y = ( c0 - 2 * (ch1) + ch2 + s0 - 2 * sh1 + sh2 );
 
 
 
-figure(1);
+f1 = figure(1);
 hold on
 ps0 = plot(out.tout, y, "-.",'LineWidth',2);
 % ps1 = plot(out.tout, y1, "-.",'LineWidth',3);
@@ -35,5 +38,7 @@ ps_sim = plot(out.simout,"--",'LineWidth',3);
 legend('Theoretical', 'Simulation Out', 'Simulation In');
 
 hold off
+
+uiwait(f1);
 
 
