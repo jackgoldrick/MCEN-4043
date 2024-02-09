@@ -93,7 +93,7 @@ vout_ex_5 = data5(:, 3);
 
 %% plot 
 clf
-figure(1)
+f1 = figure(1);
 
 hold on
 
@@ -114,7 +114,7 @@ pt = plot(vin_t, theor_vout, ":",'LineWidth',3);
 
 hold off
 
-figure(2);
+f2 = figure(2);
 hold on
 
 title("Experimental Voltage v. Time")
@@ -163,5 +163,9 @@ ylim([ -.1 1.1])
 
 
 hold off
+
+uiwait(f1);
+uiwait(f2);
+
 
 
