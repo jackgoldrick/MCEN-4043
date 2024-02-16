@@ -1,8 +1,9 @@
-clear
-%% Noise input (1) and Response (2) data construction
+%set up nice workspace
 clear all
 close all
 clc
+
+%% Noise input (1) and Response (2) data construction
 file1 = "../input-data/scope_18.csv";
 
 opts1 = detectImportOptions(file1);
@@ -15,11 +16,11 @@ data1 = readmatrix(file1, opts1);
 %  matlab which could cause the sample range, cols, and biases to change.
 % I did most of the leg work in excel by finding the minimum of each column
 % and normalizing based off that .
-t_N = data1(1302:2200, 1);
+t_N = data1(3:2200, 1);
 
-noise_in = data1(1302:10000, 2);
+noise_in = data1(3:10000, 2);
 
-noise_out = (data1(1302:10000, 3));
+noise_out = (data1(3:10000, 3));
 
 %% Step input (1) and Response (2) data construction 503:1248
 
@@ -29,10 +30,11 @@ opts2 = detectImportOptions(file2);
 
 data2 = readmatrix(file2,opts2);
 %508 is max
-t_imp = data2(1302:10000, 1);
+t_imp = linspace(0,0.9,(5000-1315)+1);
+%data2(1302:5000, 1);
 
 % the .0101 may change based on the graph of the impulse response
-imp_out = ((data2(1302:10000, 3)).* 100 +492); % 10.1 /2);
+imp_out = ((data2(1315:5000, 3)).* 100 +492); % 10.1 /2);
 % len = length(step_out);
 % diff = length(1500:1752);
 % for i=0: diff
@@ -46,7 +48,7 @@ Time = DeltaT .*(0:(length(noise_in)-1));
 %First requested figure: impulse response graph, chopped at beginning of
 %decay
 figure(1)
-pl_imp_response = plot(Time, imp_out);
+pl_imp_response = plot(t_imp, imp_out);
 title("Impulse Response")
 xlabel("time (s)")
 ylabel("Vout (V)")
