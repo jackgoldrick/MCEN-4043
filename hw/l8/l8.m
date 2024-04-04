@@ -1,0 +1,79 @@
+%set up nice workspace
+clear all
+close all
+clc
+
+%First frequency
+file1 = "scope_0.csv";
+
+opts1 = detectImportOptions(file1);
+
+data1 = readmatrix(file1, opts1);
+
+t_N = data1(:, 1);
+
+V_in = data1(:, 2);
+
+V_out = (data1(:, 3));
+figure(1);
+hold on
+plot(t_N, V_in, 'LineWidth', 2);
+plot(t_N, V_out,'--', 'LineWidth', 2);
+title("Input Frequency = 1 rad/sec")
+xlabel("Time (s)")
+ylabel("Signal (V)")
+legend('V in', 'V out')
+axis([0 15 -1.25 1.25])
+%Last frequency
+file2 = "scope_10.csv";
+
+opts2 = detectImportOptions(file2);
+
+data2 = readmatrix(file2, opts2);
+
+t_N2 = data2(:, 1);
+
+V_in2 = data2(:, 2);
+
+V_out2 = (data2(:, 3));
+figure(2);
+hold on
+plot(t_N2, V_in2, 'LineWidth', 2);
+plot(t_N2, V_out2, 'LineWidth', 2);
+
+title("Input Frequency = 500 rad/sec")
+xlabel("Time (s)")
+ylabel("Signal (V)")
+legend('V in', 'V out')
+axis([0 0.04 -1.25 1.25])
+
+%log-log FRF magnitude
+w=[1 2 3 4 5 6 7 8 9 10 20 30 40 50 60 70 80 90 100 200 300 400 500]
+
+g=[ 0.9958312655 0.9975171318 0.9962756977 0.9937928295 ...
+0.9919058496 0.9906644155 0.9894229814 0.9875360016 ...
+0.98565828 0.9844075876 0.9419159296 0.881819992 0.7921048697 ...
+0.7510729614 0.6896396846 0.6323110022 0.57922403 0.5345682103 ...
+0.5003005711 0.2744576135 0.1891593476 0.1417944436 0.1128053368]
+figure(3)
+loglog(w,g,'.','LineWidth', 2)
+title("FRF: |G|")
+xlabel("Input Frequency (Hz)")
+ylabel("|G|")
+%legend('Experimental', 'Theoretical')
+
+%semi-log FRF phase
+
+
+phase=[0.7879 2.065 3.123 4.059 5.527 6.105 7.045 8.0816 9.0677 9.9714 ...
+19.215 27.767 37.349 40.896 46.125 50.403 54.037 57.046 59.654 73.282 ...
+78.42 80.519 82.626]
+
+figure(4)
+semilogx(w,phase, '.','LineWidth', 2)
+title("FRF: phase of G")
+xlabel("Input Frequency (Hz)")
+ylabel("Phase of G")
+%legend('Experimental', 'Theoretical')
+
+
