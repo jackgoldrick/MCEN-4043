@@ -48,32 +48,41 @@ legend('V in', 'V out')
 axis([0 0.04 -1.25 1.25])
 
 %log-log FRF magnitude
-w=[1 2 3 4 5 6 7 8 9 10 20 30 40 50 60 70 80 90 100 200 300 400 500]
+w=[1 2 3 4 5 6 7 8 9 10 20 30 40 50 60 70 80 90 100 200 300 400 500];
 
 g=[ 0.9958312655 0.9975171318 0.9962756977 0.9937928295 ...
 0.9919058496 0.9906644155 0.9894229814 0.9875360016 ...
 0.98565828 0.9844075876 0.9419159296 0.881819992 0.7921048697 ...
 0.7510729614 0.6896396846 0.6323110022 0.57922403 0.5345682103 ...
-0.5003005711 0.2744576135 0.1891593476 0.1417944436 0.1128053368]
+0.5003005711 0.2744576135 0.1891593476 0.1417944436 0.1128053368];
 figure(3)
 loglog(w,g,'.','LineWidth', 2)
 title("FRF: |G|")
 xlabel("Input Frequency (Hz)")
 ylabel("|G|")
-%legend('Experimental', 'Theoretical')
+
+hold on
+R=5.1e3
+C=3.3e-6
+mag_g= @(w) (1./sqrt(1+R^2*C^2*w.^2));
+w_mag=[0:1:500];
+plot(w_mag,mag_g(w_mag))
+legend('Experimental', 'Theoretical')
 
 %semi-log FRF phase
-
-
-phase=[0.7879 2.065 3.123 4.059 5.527 6.105 7.045 8.0816 9.0677 9.9714 ...
+phase=-1.*[0.7879 2.065 3.123 4.059 5.527 6.105 7.045 8.0816 9.0677 9.9714 ...
 19.215 27.767 37.349 40.896 46.125 50.403 54.037 57.046 59.654 73.282 ...
-78.42 80.519 82.626]
+78.42 80.519 82.626];
 
 figure(4)
 semilogx(w,phase, '.','LineWidth', 2)
-title("FRF: phase of G")
+title("FRF: Phase of G")
 xlabel("Input Frequency (Hz)")
 ylabel("Phase of G")
-%legend('Experimental', 'Theoretical')
+
+hold on
+phase_g=@(w)(-1.*atan2(R*C.*w,1).*180./pi)
+plot(w_mag,phase_g(w_mag))
+legend('Experimental', 'Theoretical')
 
 
